@@ -120,7 +120,7 @@ The application allows administrators to create users and projects, assign users
 
 
 
-The application follows a layered backend architecture:
+The application follows a layered monolithic architecture.
 
 
 
@@ -151,4 +151,68 @@ Repository Layer
 &#x20;      v
 
 H2 Database
+
+```
+
+
+
+\### Application Layers
+
+
+
+\*\*Controller Layer\*\*
+
+
+
+Handles HTTP requests and responses.
+
+
+
+\*\*Service Layer\*\*
+
+
+
+Contains business logic such as:
+
+
+
+\- User creation
+
+\- Project creation
+
+\- Project assignment
+
+\- Update creation
+
+\- Project access validation
+
+\- Searching updates
+
+
+
+\*\*Repository Layer\*\*
+
+
+
+Uses Spring Data JPA to communicate with the database.
+
+
+
+\*\*Security Layer\*\*
+
+
+
+Handles:
+
+
+
+\- JWT generation
+
+\- JWT validation
+
+\- Authentication
+
+\- Authorization
+
+\- Security context population
 
