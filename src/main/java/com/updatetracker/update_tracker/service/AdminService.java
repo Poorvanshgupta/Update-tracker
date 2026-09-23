@@ -1,0 +1,8 @@
+package com.updatetracker.update_tracker.service;
+import com.updatetracker.update_tracker.dto.*; import com.updatetracker.update_tracker.exception.BadRequestException; import com.updatetracker.update_tracker.exception.ResourceNotFoundException; import com.updatetracker.update_tracker.model.*; import com.updatetracker.update_tracker.repository.*; import org.springframework.security.crypto.password.PasswordEncoder; import org.springframework.stereotype.Service; import org.springframework.transaction.annotation.Transactional;
+@Service public class AdminService { private final UserRepository users; private final ProjectRepository projects; private final PasswordEncoder encoder;
+ public AdminService(UserRepository u,ProjectRepository p,PasswordEncoder e){users=u;projects=p;encoder=e;}
+ @Transactional public User createUser(CreateUserRequest r){if(users.existsByUsername(r.username()))throw new BadRequestException("Username already exists"); User u=new User();u.setUsername(r.username());u.setPassword(encoder.encode(r.password()));u.setRole(r.role());return users.save(u);}
+ @Transactional public Project createProject(CreateProjectRequest r){if(projects.existsByName(r.name()))throw new BadRequestException("Project already exists");Project p=new Project();p.setName(r.name());p.setDescription(r.description());return projects.save(p);}
+ @Transactional public void assignProject(Long userId,Long projectId){User u=users.findById(userId).orElseThrow(()->new ResourceNotFoundException("User not found"));Project p=projects.findById(projectId).orElseThrow(()->new ResourceNotFoundException("Project not found"));u.getProjects().add(p);users.save(u);}
+}

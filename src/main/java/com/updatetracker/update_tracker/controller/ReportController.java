@@ -1,0 +1,3 @@
+package com.updatetracker.update_tracker.controller;
+import com.updatetracker.update_tracker.service.ReportService; import org.springframework.security.access.prepost.PreAuthorize; import org.springframework.web.bind.annotation.*; import java.util.Map;
+@RestController @RequestMapping("/api/reports") @PreAuthorize("hasRole('ADMIN')") public class ReportController {private final ReportService service;public ReportController(ReportService s){service=s;} @GetMapping("/users") public Map<String,Long> byUser(){return service.countByUser();} @GetMapping("/projects") public Map<String,Long> byProject(){return service.countByProject();}}
