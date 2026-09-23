@@ -1,58 +1,154 @@
-# Update Tracker
+\# Update Tracker
 
-A reconstructed Spring Boot backend based on the Update Tracker design we developed together. This is a reconstruction, not the original source archive.
 
-## Features
-- Admin/User roles
-- JWT authentication
-- Admin creates users and projects
-- Admin assigns users to projects
-- Users create project-specific work updates
-- Search updates by username/project/date range
-- User's own update history
-- Admin reporting by user/project
-- Validation and global exception handling
-- H2 database and console for local development
-- JUnit/Spring Boot context test
 
-## Stack
-Java 17, Spring Boot 3.5.6, Spring Security, JWT (JJWT), Spring Data JPA, H2, Maven, JUnit 5.
+A Spring Boot backend application for managing users, projects, and daily work updates with JWT-based authentication and role-based access control.
 
-## Run
-```bash
-mvn clean spring-boot:run
-```
-Application: http://localhost:8080
-H2 console: http://localhost:8080/h2-console
-JDBC URL: jdbc:h2:mem:updatetracker
-User: sa
-Password: (empty)
 
-## API flow
-1. Create an initial admin user directly in the database or add a seed mechanism.
-2. Login with `POST /api/auth/login`.
-3. Send `Authorization: Bearer <token>` on protected calls.
-4. Admin creates users/projects and assigns project access.
-5. User creates updates with `POST /api/updates`.
 
-### Example login
-```json
-POST /api/auth/login
-{
-  "username": "admin",
-  "password": "password"
-}
-```
+The application allows administrators to create users and projects, assign users to projects, and allows users to submit and retrieve their work updates.
 
-### Create update
-```json
-POST /api/updates
-{
-  "updateDate": "2026-09-23",
-  "projectId": 1,
-  "content": "Implemented backend validation and fixed production issue."
-}
-```
 
-## Important
-For production, replace `app.jwt.secret`, use a persistent database, add migrations (Flyway/Liquibase), stronger DTO responses, auditing, and externalized secrets.
+
+\---
+
+
+
+\## Features
+
+
+
+\### Authentication \& Authorization
+
+\- JWT-based authentication
+
+\- Role-based access control
+
+\- ADMIN and USER roles
+
+\- Password hashing using BCrypt
+
+\- Protected REST APIs
+
+
+
+\### User Management
+
+\- Admin can create users
+
+\- Supports ADMIN and USER roles
+
+\- Users can be assigned to multiple projects
+
+
+
+\### Project Management
+
+\- Admin can create projects
+
+\- Admin can assign projects to users
+
+\- Users can create updates only for projects assigned to them
+
+
+
+\### Work Updates
+
+\- Users can create daily work updates
+
+\- Users can retrieve their own updates
+
+\- Search updates by:
+
+&#x20; - Username
+
+&#x20; - Project
+
+&#x20; - Date range
+
+
+
+\### Validation \& Error Handling
+
+\- Request validation using Jakarta Bean Validation
+
+\- Centralized exception handling using `@RestControllerAdvice`
+
+\- Standard HTTP status codes for API errors
+
+
+
+\---
+
+
+
+\## Tech Stack
+
+
+
+| Technology | Usage |
+
+|---|---|
+
+| Java 17 | Programming language |
+
+| Spring Boot | Backend framework |
+
+| Spring Security | Authentication \& authorization |
+
+| JWT | Stateless authentication |
+
+| Spring Data JPA | Database access |
+
+| Hibernate | ORM |
+
+| H2 Database | Development database |
+
+| Maven | Build \& dependency management |
+
+| REST API | Client-server communication |
+
+| Postman | API testing |
+
+
+
+\---
+
+
+
+\## Architecture
+
+
+
+The application follows a layered backend architecture:
+
+
+
+```text
+
+Client / Postman
+
+&#x20;      |
+
+&#x20;      v
+
+REST Controllers
+
+&#x20;      |
+
+&#x20;      v
+
+Service Layer
+
+&#x20;      |
+
+&#x20;      v
+
+Repository Layer
+
+&#x20;      |
+
+&#x20;      v
+
+H2 Database
+
